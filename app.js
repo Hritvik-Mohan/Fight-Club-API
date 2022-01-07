@@ -42,7 +42,7 @@ app.route("/movies")
     });
     newMovie.save(function(err){
         if(!err){
-            res.send("Successfully added a new movie.");
+            res.send(JSON.parse('{"message":"successfully added new movie"}'));
         } else {
             res.send(err);
         }
@@ -52,11 +52,80 @@ app.route("/movies")
 .delete(function(req, res){
     movie.deleteMany(function(err){
         if(!err){
-            res.send("Successfully deleted all movies.");
+            res.send(JSON.parse('{"message":"successfully deleted all movies"}'));
         } else {
             res.send(err);
         }
     });
 });
 
+app.route("/movies/:title")
+    .get(function(req, res){
+        movie.findOne({title: req.params.title}, function(err, foundMovie){
+            if(!err){
+                if(foundMovie){
+                    res.send(foundMovie);
+                }else{
+                    res.send(JSON.parse('{"message":"404"}'))
+                }
+            }else{
+                res.send(err);
+            }
+        });
+    })
+    .put(function(req, res){
+        movie.findOneAndUpdate({
+            title: req.params.title
+        },{
+            title: req.body.title,
+            description: req.body.description
+        },
+        {
+            overwrite: true
+        },
+        function(err, foundMovie){
+            if(!err){
+                if(foundMovie){
+                    res.send(JSON.parse('{"message":"patched the item data"}'));
+                }else{
+                    res.send(JSON.parse('{"message":"404"}'));
+                }
+            }else{
+                res.send(err);
+            }
+        });
+    })
+    .patch(function(req, res){
+        movie.findOneAndUpdate({
+            title: req.params.title
+        },{
+            $set: req.body
+        },function(err, foundMovie){
+            if(!err){
+                if(foundMovie){
+                    res.send(JSON.parse('{"message":"successfully patched"}'));
+                }else{
+                    res.send(JSON.parse('{"message":"404"}'))
+                }
+            }else{
+                res.send(err)
+            }
+        });
+    })
+    .delete(function(req, res){
+        movie.findOneAndRemove({
+            title: req.params.title
+        },
+        function(err, foundMovie){
+            if(!err){
+                if(foundMovie){
+                    res.send(JSON.parse('{"message":"deleted the item data"}'))
+                }else{
+                    res.send(JSON.parse('{"message":"404"}'))
+                }
+            }else{
+                res.send(err)
+            }
+        });
+    })
 app.listen(4000, ()=> console.log("Server started on port 4000"));
