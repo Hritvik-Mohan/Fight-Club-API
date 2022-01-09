@@ -48,7 +48,7 @@ app.route("/")
             if (!err) {
                 if (foundQuote) {
                     // getting the comment
-                    comment = foundComment.quote;
+                    comment = foundQuote.quote;
 
                     // converting it to JSON string object
                     json_return_sting = `{"quote":"${comment}"}`;
@@ -69,10 +69,10 @@ app.route("/")
 app.route("/FightClub")
 
 .get(function(req, res){
-    movie.find(function(err, foundQuotes){
+    Quote.find(function(err, foundQuotes){
         if(!err){
             if (foundQuotes) {
-                res.send(foundComments);
+                res.send(foundQuotes);
             } else {
                 res.send('{"error":"empty API"}');
             }
@@ -89,7 +89,7 @@ app.route("/FightClub")
     });
     newQuote.save(function(err){
         if(!err){
-            res.send(JSON.parse('{"message":"successfully added new movie"}'));
+            res.send(JSON.parse('{"message":"successfully added new quote."}'));
         } else {
             res.send(err);
         }
@@ -145,7 +145,7 @@ app.route("/FightClub/:sno")
         });
     })
     .patch(function(req, res){
-        movie.findOneAndUpdate({
+        Quote.findOneAndUpdate({
             sno: req.params.sno
         },{
             $set: req.body
@@ -162,7 +162,7 @@ app.route("/FightClub/:sno")
         });
     })
     .delete(function(req, res){
-        movie.findOneAndRemove(
+        Quote.findOneAndRemove(
         {
             sno: req.params.sno
         },
