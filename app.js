@@ -38,35 +38,35 @@ Quote.countDocuments((err, count) => {
 
 // home rouote
 
+// app.route("/")
+//     .get((req, res) => {
+//         let randomQuote = Math.floor(Math.random()*total)+1;
+
+//         Quote.findOne({
+//             sno: randomQuote
+//         }, (err, foundQuote) => {
+//             if (!err) {
+//                 if (foundQuote) {
+//                     // getting the comment
+//                     comment = foundQuote.quote;
+
+//                     // converting it to JSON string object
+//                     json_return_sting = `{"quote":"${comment}"}`;
+
+//                     // converting it to string
+//                     return_string = json_return_sting.toString();
+
+//                     res.send(JSON.parse(return_string))
+//                 } else {
+//                     res.send(JSON.parse('{"error":"no quotes found"}'));
+//                 }
+//             } else {
+//                 res.send(err);
+//             }
+//         });
+//     });
+
 app.route("/")
-    .get((req, res) => {
-        let randomQuote = Math.floor(Math.random()*total)+1;
-
-        Quote.findOne({
-            sno: randomQuote
-        }, (err, foundQuote) => {
-            if (!err) {
-                if (foundQuote) {
-                    // getting the comment
-                    comment = foundQuote.quote;
-
-                    // converting it to JSON string object
-                    json_return_sting = `{"quote":"${comment}"}`;
-
-                    // converting it to string
-                    return_string = json_return_sting.toString();
-
-                    res.send(JSON.parse(return_string))
-                } else {
-                    res.send(JSON.parse('{"error":"no quotes found"}'));
-                }
-            } else {
-                res.send(err);
-            }
-        });
-    });
-
-app.route("/FightClub")
 
 .get(function(req, res){
     Quote.find(function(err, foundQuotes){
