@@ -1,6 +1,8 @@
 require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
+const ejs = require("ejs");
+const path = require('path');
 const mongoose = require("mongoose");
 const PORT = process.env.PORT || 4000
 
@@ -50,13 +52,14 @@ app.route("/")
                     // getting the comment
                     comment = foundQuote.quote;
 
-                    // converting it to JSON string object
-                    json_return_sting = `{"quote":"${comment}"}`;
+                    // // converting it to JSON string object
+                    // json_return_string = `{"quote":"${comment}"}`;
 
-                    // converting it to string
-                    return_string = json_return_sting.toString();
+                    // // converting it to string
+                    // return_string = json_return_string.toString();
 
-                    res.send(JSON.parse(return_string))
+                    // res.send(JSON.parse(json_return_string))
+                    res.send(`<center><h2>${comment}</h2></center>`)
                 } else {
                     res.send(JSON.parse('{"error":"no quotes found"}'));
                 }
@@ -64,7 +67,10 @@ app.route("/")
                 res.send(err);
             }
         });
+
+        // res.sendFile(path.join(__dirname, '/index.html'));
     });
+
 
 app.route("/FightClub")
 
