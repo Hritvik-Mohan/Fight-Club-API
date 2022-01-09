@@ -179,4 +179,9 @@ app.route("/FightClub/:sno")
         });
     });
 
-app.listen(4000, ()=> console.log("Server started on port 4000"));
+app.listen(process.env.PORT)
+
+app.listen(4000 , ()=> console.log("Server started on port 4000"));
+
+// var port_number = server.listen(process.env.PORT || 3000);
+// app.listen(port_number);
