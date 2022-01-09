@@ -58,7 +58,7 @@ app.route("/")
 
                     res.send(JSON.parse(return_string))
                 } else {
-                    res.send(JSON.parse('{"error":"no comments found"}'));
+                    res.send(JSON.parse('{"error":"no quotes found"}'));
                 }
             } else {
                 res.send(err);
