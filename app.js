@@ -1,8 +1,8 @@
 require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
-const ejs = require("ejs");
 const mongoose = require("mongoose");
+const PORT = process.env.PORT || 4000
 
 const app = express();
 
@@ -38,35 +38,35 @@ Quote.countDocuments((err, count) => {
 
 // home rouote
 
-// app.route("/")
-//     .get((req, res) => {
-//         let randomQuote = Math.floor(Math.random()*total)+1;
-
-//         Quote.findOne({
-//             sno: randomQuote
-//         }, (err, foundQuote) => {
-//             if (!err) {
-//                 if (foundQuote) {
-//                     // getting the comment
-//                     comment = foundQuote.quote;
-
-//                     // converting it to JSON string object
-//                     json_return_sting = `{"quote":"${comment}"}`;
-
-//                     // converting it to string
-//                     return_string = json_return_sting.toString();
-
-//                     res.send(JSON.parse(return_string))
-//                 } else {
-//                     res.send(JSON.parse('{"error":"no quotes found"}'));
-//                 }
-//             } else {
-//                 res.send(err);
-//             }
-//         });
-//     });
-
 app.route("/")
+    .get((req, res) => {
+        let randomQuote = Math.floor(Math.random()*total)+1;
+
+        Quote.findOne({
+            sno: randomQuote
+        }, (err, foundQuote) => {
+            if (!err) {
+                if (foundQuote) {
+                    // getting the comment
+                    comment = foundQuote.quote;
+
+                    // converting it to JSON string object
+                    json_return_sting = `{"quote":"${comment}"}`;
+
+                    // converting it to string
+                    return_string = json_return_sting.toString();
+
+                    res.send(JSON.parse(return_string))
+                } else {
+                    res.send(JSON.parse('{"error":"no quotes found"}'));
+                }
+            } else {
+                res.send(err);
+            }
+        });
+    });
+
+app.route("/FightClub")
 
 .get(function(req, res){
     Quote.find(function(err, foundQuotes){
@@ -179,9 +179,12 @@ app.route("/FightClub/:sno")
         });
     });
 
-app.listen(process.env.PORT)
+// app.listen(process.env.PORT)
 
-app.listen(4000 , ()=> console.log("Server started on port 4000"));
+
+
+
+app.listen(PORT , ()=> console.log("Server started on port 4000"));
 
 // var port_number = server.listen(process.env.PORT || 3000);
 // app.listen(port_number);
