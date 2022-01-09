@@ -16,19 +16,66 @@ app.use(express.static("public"));
 
 mongoose.connect(process.env.MONGO_TOKEN);
 
-const movieSchema = {
-    title: String,
-    description: String
+// mongoose.connect("mongodb://localhost:27017/FightClubsDB");
+
+const quoteSchema = {
+    sno: Number,
+    quote: String
 };
 
-const movie = mongoose.model("Movie", movieSchema);
+const Quote = mongoose.model("Quote", quoteSchema);
 
-app.route("/movies")
+// Finding the total number of data entries
+let total = 1;
+Quote.countDocuments((err, count) => {
+    if(err){
+        console.log(err);
+    } else {
+        console.log(count)
+        total = count;
+    }
+});
+
+// home rouote
+
+app.route("/")
+    .get((req, res) => {
+        let randomQuote = Math.floor(Math.random()*total)+1;
+
+        Quote.findOne({
+            sno: randomQuote
+        }, (err, foundQuote) => {
+            if (!err) {
+                if (foundQuote) {
+                    // getting the comment
+                    comment = foundComment.quote;
+
+                    // converting it to JSON string object
+                    json_return_sting = `{"quote":"${comment}"}`;
+
+                    // converting it to string
+                    return_string = json_return_sting.toString();
+
+                    res.send(JSON.parse(return_string))
+                } else {
+                    res.send(JSON.parse('{"error":"no comments found"}'));
+                }
+            } else {
+                res.send(err);
+            }
+        });
+    });
+
+app.route("/FightClub")
 
 .get(function(req, res){
-    movie.find(function(err, foundMovies){
+    movie.find(function(err, foundQuotes){
         if(!err){
-            res.send(foundMovies);
+            if (foundQuotes) {
+                res.send(foundComments);
+            } else {
+                res.send('{"error":"empty API"}');
+            }
         } else {
             res.send(err);
         }
@@ -36,11 +83,11 @@ app.route("/movies")
 })
 
 .post(function(req, res){
-    const newMovie = new movie({
-        title: req.body.title,
-        description: req.body.description
+    const newQuote = new Quote({
+        sno: req.body.sno,
+        quote: req.body.quote
     });
-    newMovie.save(function(err){
+    newQuote.save(function(err){
         if(!err){
             res.send(JSON.parse('{"message":"successfully added new movie"}'));
         } else {
@@ -50,21 +97,21 @@ app.route("/movies")
 })
 
 .delete(function(req, res){
-    movie.deleteMany(function(err){
+    Quote.deleteMany(function(err){
         if(!err){
-            res.send(JSON.parse('{"message":"successfully deleted all movies"}'));
+            res.send(JSON.parse('{"message":"successfully deleted all quotes."}'));
         } else {
             res.send(err);
         }
     });
 });
 
-app.route("/movies/:title")
+app.route("/FightClub/:sno")
     .get(function(req, res){
-        movie.findOne({title: req.params.title}, function(err, foundMovie){
+        Quote.findOne({sno: req.params.sno}, function(err, foundQuote){
             if(!err){
-                if(foundMovie){
-                    res.send(foundMovie);
+                if(foundQuote){
+                    res.send(foundQuote);
                 }else{
                     res.send(JSON.parse('{"message":"404"}'))
                 }
@@ -74,18 +121,20 @@ app.route("/movies/:title")
         });
     })
     .put(function(req, res){
-        movie.findOneAndUpdate({
-            title: req.params.title
-        },{
-            title: req.body.title,
-            description: req.body.description
+        Quote.findOneAndUpdate(
+        {
+            sno: Number(req.params.sno)
+        },
+        {
+            sno: req.body.sno,
+            quote: req.body.quote
         },
         {
             overwrite: true
         },
-        function(err, foundMovie){
+        function(err, foundQuote){
             if(!err){
-                if(foundMovie){
+                if(foundQuote){
                     res.send(JSON.parse('{"message":"patched the item data"}'));
                 }else{
                     res.send(JSON.parse('{"message":"404"}'));
@@ -97,12 +146,12 @@ app.route("/movies/:title")
     })
     .patch(function(req, res){
         movie.findOneAndUpdate({
-            title: req.params.title
+            sno: req.params.sno
         },{
             $set: req.body
-        },function(err, foundMovie){
+        },function(err, foundQuote){
             if(!err){
-                if(foundMovie){
+                if(foundQuote){
                     res.send(JSON.parse('{"message":"successfully patched"}'));
                 }else{
                     res.send(JSON.parse('{"message":"404"}'))
@@ -113,12 +162,13 @@ app.route("/movies/:title")
         });
     })
     .delete(function(req, res){
-        movie.findOneAndRemove({
-            title: req.params.title
+        movie.findOneAndRemove(
+        {
+            sno: req.params.sno
         },
-        function(err, foundMovie){
+        function(err, foundQuote){
             if(!err){
-                if(foundMovie){
+                if(foundQuote){
                     res.send(JSON.parse('{"message":"deleted the item data"}'))
                 }else{
                     res.send(JSON.parse('{"message":"404"}'))
@@ -127,5 +177,6 @@ app.route("/movies/:title")
                 res.send(err)
             }
         });
-    })
+    });
+
 app.listen(4000, ()=> console.log("Server started on port 4000"));
