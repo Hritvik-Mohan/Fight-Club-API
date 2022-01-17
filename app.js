@@ -1,8 +1,8 @@
 require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
-const ejs = require("ejs");
-const path = require('path');
+// const ejs = require("ejs");
+// const path = require('path');
 const mongoose = require("mongoose");
 const PORT = process.env.PORT || 4000
 
@@ -22,7 +22,8 @@ mongoose.connect(process.env.MONGO_TOKEN);
 
 const quoteSchema = {
     sno: Number,
-    quote: String
+    quote: String,
+    author: String
 };
 
 const Quote = mongoose.model("Quote", quoteSchema);
@@ -86,12 +87,19 @@ app.route("/FightClub")
             res.send(err);
         }
     });
-});
+})
+;
+
+
+
+
+/* ********************************************** */
 
 // .post(function(req, res){
 //     const newQuote = new Quote({
 //         sno: req.body.sno,
-//         quote: req.body.quote
+//         quote: req.body.quote,
+//         author: req.body.author
 //     });
 //     newQuote.save(function(err){
 //         if(!err){
@@ -112,6 +120,16 @@ app.route("/FightClub")
 //     });
 // });
 
+/* ********************************************** */
+
+
+
+
+
+
+
+
+
 app.route("/FightClub/:sno")
     .get(function(req, res){
         Quote.findOne({sno: req.params.sno}, function(err, foundQuote){
@@ -125,65 +143,81 @@ app.route("/FightClub/:sno")
                 res.send(err);
             }
         });
-    });
-//     .put(function(req, res){
-//         Quote.findOneAndUpdate(
-//         {
-//             sno: Number(req.params.sno)
-//         },
-//         {
-//             sno: req.body.sno,
-//             quote: req.body.quote
-//         },
-//         {
-//             overwrite: true
-//         },
-//         function(err, foundQuote){
-//             if(!err){
-//                 if(foundQuote){
-//                     res.send(JSON.parse('{"message":"patched the item data"}'));
-//                 }else{
-//                     res.send(JSON.parse('{"message":"404"}'));
-//                 }
-//             }else{
-//                 res.send(err);
-//             }
-//         });
-//     })
-//     .patch(function(req, res){
-//         Quote.findOneAndUpdate({
-//             sno: req.params.sno
-//         },{
-//             $set: req.body
-//         },function(err, foundQuote){
-//             if(!err){
-//                 if(foundQuote){
-//                     res.send(JSON.parse('{"message":"successfully patched"}'));
-//                 }else{
-//                     res.send(JSON.parse('{"message":"404"}'))
-//                 }
-//             }else{
-//                 res.send(err)
-//             }
-//         });
-//     })
-//     .delete(function(req, res){
-//         Quote.findOneAndRemove(
-//         {
-//             sno: req.params.sno
-//         },
-//         function(err, foundQuote){
-//             if(!err){
-//                 if(foundQuote){
-//                     res.send(JSON.parse('{"message":"deleted the item data"}'))
-//                 }else{
-//                     res.send(JSON.parse('{"message":"404"}'))
-//                 }
-//             }else{
-//                 res.send(err)
-//             }
-//         });
-//     });
+    })
+;
+
+
+
+
+
+
+
+
+
+/* ********************************************** */
+
+    // .put(function(req, res){
+    //     Quote.findOneAndUpdate(
+    //     {
+    //         sno: Number(req.params.sno)
+    //     },
+    //     {
+    //         sno: req.body.sno,
+    //         quote: req.body.quote,
+    //         author: req.body.author
+    //     },
+    //     {
+    //         overwrite: true
+    //     },
+    //     function(err, foundQuote){
+    //         if(!err){
+    //             if(foundQuote){
+    //                 res.send(JSON.parse('{"message":"patched the item data"}'));
+    //             }else{
+    //                 res.send(JSON.parse('{"message":"404"}'));
+    //             }
+    //         }else{
+    //             res.send(err);
+    //         }
+    //     });
+    // })
+    // .patch(function(req, res){
+    //     Quote.findOneAndUpdate({
+    //         sno: req.params.sno
+    //     },{
+    //         $set: req.body
+    //     },function(err, foundQuote){
+    //         if(!err){
+    //             if(foundQuote){
+    //                 res.send(JSON.parse('{"message":"successfully patched"}'));
+    //             }else{
+    //                 res.send(JSON.parse('{"message":"404"}'))
+    //             }
+    //         }else{
+    //             res.send(err)
+    //         }
+    //     });
+    // })
+    // .delete(function(req, res){
+    //     Quote.findOneAndRemove(
+    //     {
+    //         sno: req.params.sno
+    //     },
+    //     function(err, foundQuote){
+    //         if(!err){
+    //             if(foundQuote){
+    //                 res.send(JSON.parse('{"message":"deleted the item data"}'))
+    //             }else{
+    //                 res.send(JSON.parse('{"message":"404"}'))
+    //             }
+    //         }else{
+    //             res.send(err)
+    //         }
+    //     });
+    // });
+
+/* ********************************************** */
+
 
 // app.listen(process.env.PORT)
 
