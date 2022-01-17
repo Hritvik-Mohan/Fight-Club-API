@@ -22,7 +22,8 @@ mongoose.connect(process.env.MONGO_TOKEN);
 
 const quoteSchema = {
     sno: Number,
-    quote: String
+    quote: String,
+    author: String
 };
 
 const Quote = mongoose.model("Quote", quoteSchema);
@@ -91,7 +92,8 @@ app.route("/FightClub")
 .post(function(req, res){
     const newQuote = new Quote({
         sno: req.body.sno,
-        quote: req.body.quote
+        quote: req.body.quote,
+        author: req.body.author
     });
     newQuote.save(function(err){
         if(!err){
@@ -133,7 +135,8 @@ app.route("/FightClub/:sno")
         },
         {
             sno: req.body.sno,
-            quote: req.body.quote
+            quote: req.body.quote,
+            author: req.body.author
         },
         {
             overwrite: true
