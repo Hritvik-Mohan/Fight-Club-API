@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const path = require('path');
 const mongoose = require("mongoose");
+const cors = require("cors");
 const PORT = process.env.PORT || 4000
 
 const app = express();
@@ -13,6 +14,8 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+
+app.use(cors());
 
 app.use(express.static("public"));
 
