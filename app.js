@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 // const ejs = require("ejs");
 // const path = require('path');
 const mongoose = require("mongoose");
@@ -9,6 +10,8 @@ const PORT = process.env.PORT || 4000
 const app = express();
 
 app.set('view engine', 'ejs');
+
+app.use(cors());
 
 app.use(bodyParser.urlencoded({
     extended: true
